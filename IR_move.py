@@ -9,7 +9,6 @@ ir = IR(pin)
 info = ''
 ' '
 speed = 50
-# Infrared reception interval time.
 IR_delay_time = 0.11
 
 
@@ -20,11 +19,8 @@ def IR_move():
         result = []
         changed, button, repeat, t_ok = ir.scan()
         if changed:
-
-            # Perform actions when a new infrared signal is received
-            result = [button, repeat, t_ok]  # Write button, repeat, t_ok to the list
+            result = [button, repeat, t_ok] 
             print("Command: %s" %result[0])
-            #time.sleep(0.01)
 
             if(result[0]!=None):
                 if result[0] == "up":

@@ -8,9 +8,7 @@ import microcontroller
 from pwmio import PWMOut
 import digitalio
 import pwmio
-from micropython import const
-from adafruit_bus_device.i2c_device import I2CDevice
-from adafruit_ht16k33 import matrix
+
 
 
 Dir_forward = 1
@@ -286,32 +284,26 @@ class IR(object):
             return 'none'
 
     def scan(self):
-        # check edge
         cur = self.irRecv.value
         edge = self.__check_edge(self.prev, cur)
         self.prev = cur
-        # simulate interrupt
         if edge == 'rising':
             self.__logHandler(True)
         elif edge == 'falling':
             self.__logHandler(False)
 
-        # data received
         if self.recived_ok:
             self.__check_cmd()
             self.recived_ok = False
 
-        # data has changed()
         if self.cmd != self.cmd_last or self.repeat != self.repeat_last or self.t_ok != self.t_ok_last:
             self.changed = True
         else:
             self.changed = False
 
-        # renew
         self.cmd_last = self.cmd
         self.repeat_last = self.repeat
         self.t_ok_last = self.t_ok
-        # Corresponding button character
         s = self.CODE.get(self.cmd)
         return self.changed, s, self.repeat, self.t_ok
 
